@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Student Marksheet Portal</title>
+  <style>
+    /* Reset & Styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 10px;
+    }
+
+    .marksheet-card {
+      background: #ffffff;
+      padding: 28px 24px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 12px;
+    }
+
+    .header h2 {
+      color: #1f2937;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-group input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* Summary Card Section */
+    .summary-box {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+    }
+
+    .summary-box h3 {
+      font-size: 15px;
+      color: #1f2937;
+      margin-bottom: 10px;
+      border-bottom: 1px dashed #d1d5db;
+      padding-bottom: 6px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #4b5563;
+    }
+
+    .summary-row strong {
+      color: #111827;
+    }
+
+    .badge {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .badge.pass {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge.fail {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background-color: #2563eb;
+      color: #ffffff;
+      border: none;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    .submit-btn:disabled {
+      background-color: #93c5fd;
+      cursor: not-allowed;
+    }
+
+    #statusMessage {
+      margin-top: 14px;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      text-align: center;
+      display: none;
+    }
+
+    #statusMessage.success {
+      background-color: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+
+    #statusMessage.error {
+      background-color: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    /* Mobile Adaptability */
+    @media (max-width: 480px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .marksheet-card {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="marksheet-card">
+    <div class="header">
+      <h2>College Marksheet Portal</h2>
+      <p>Enter subject marks out of 100</p>
+    </div>
+
+    <form id="marksheetForm">
+      <!-- Student Info -->
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="studentName">Student Name *</label>
+          <input type="text" id="studentName" required placeholder="e.g. Jane Doe">
+        </div>
+        <div class="form-group">
+          <label for="rollNumber">Roll Number *</label>
+          <input type="text" id="rollNumber" required placeholder="e.g. CS2026-042">
+        </div>
+      </div>
+
+      <!-- Subject Marks (Out of 100) -->
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="sub1">Mathematics *</label>
+          <input type="number" id="sub1" class="subject-input" min="0" max="100" required placeholder="0-100">
+        </div>
+        <div class="form-group">
+          <label for="sub2">Computer Science *</label>
+          <input type="number" id="sub2" class="subject-input" min="0" max="100" required placeholder="0-100">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="sub3">Physics *</label>
+          <input type="number" id="sub3" class="subject-input" min="0" max="100" required placeholder="0-100">
+        </div>
+        <div class="form-group">
+          <label for="sub4">English *</label>
+          <input type="number" id="sub4" class="subject-input" min="0" max="100" required placeholder="0-100">
+        </div>
+      </div>
+
+      <!-- Dynamic Real-Time Calculations -->
+      <div class="summary-box">
+        <h3>Live Calculation Summary</h3>
+        <div class="summary-row">
+          <span>Total Marks:</span>
+          <strong id="displayTotal">0 / 400</strong>
+        </div>
+        <div class="summary-row">
+          <span>Percentage:</span>
+          <strong id="displayPercentage">0%</strong>
+        </div>
+        <div class="summary-row">
+          <span>Grade:</span>
+          <strong id="displayGrade">-</strong>
+        </div>
+        <div class="summary-row">
+          <span>Result:</span>
+          <span id="displayResult" class="badge fail">N/A</span>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Marksheet</button>
+    </form>
+
+    <div id="statusMessage"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
